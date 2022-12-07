@@ -15,7 +15,6 @@
 # vendor/
 
 # Lock files for dependency management
-go.sum
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
