@@ -13,3 +13,11 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# Lock files for dependency management
+go.sum
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+pnpmfile.js
+
