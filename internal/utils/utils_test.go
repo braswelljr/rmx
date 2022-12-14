@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/alecthomas/assert"
 )
 
 // TestIsHidden - check if a file is hidden
@@ -15,8 +17,12 @@ func TestIsHidden(t *testing.T) {
 		if err != nil {
 			t.Error("Creating directory: ", err)
 		}
+
 		var filesAndDirs []string
+
+		// read the directory and get all files/directories
 		if err := filepath.Walk(dir, func(_ string, info os.FileInfo, _ error) error {
+			// append the file/directory name to the slice
 			filesAndDirs = append(filesAndDirs, info.Name())
 			return nil
 		}); err != nil {
@@ -32,14 +38,15 @@ func TestIsHidden(t *testing.T) {
 			if err := ioutil.WriteFile(dir+"/.test.txt", []byte("test"), 0644); err != nil {
 				t.Error("Creating file: ", err)
 			}
-		} else {
-			// if there are files/directories, check if they are hidden
-			for _, file := range filesAndDirs {
-				if IsHidden(file, false) {
-					t.Error("File should not be hidden")
-				}
+		}
+
+		// if there are files/directories, check if they are hidden
+		for _, file := range filesAndDirs {
+			if IsHidden(file, false) {
+				t.Error("File should not be hidden")
 			}
 		}
+
 	})
 }
 
@@ -54,7 +61,7 @@ func TestIsEmpty(t *testing.T) {
 
 		// check if the directory is empty
 		if !IsEmpty(dir) {
-			t.Error("Directory should be empty")
+			assert.Equal(t, true, IsEmpty(dir), "Directory should be empty")
 		}
 
 		// create a file in the directory and check if it is empty
@@ -63,7 +70,7 @@ func TestIsEmpty(t *testing.T) {
 		}
 
 		if IsEmpty(dir) {
-			t.Error("Directory should not be empty")
+			assert.Equal(t, false, IsEmpty(dir), "Directory should not be empty")
 		}
 	})
 }
