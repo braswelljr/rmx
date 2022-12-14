@@ -22,12 +22,33 @@ func (rm *RM) ShowHelp() error {
 	return nil
 }
 
+// Run - runs the command
+// @param command - commands to run
+// @param args - arguments and flags to run alongside the command
+// @return error - error if there's one
 func (rm *RM) Run(command *cobra.Command, args []string) error {
 	// check for empty args or help flag
 	if command.Flags().NFlag() < 1 || command.Flags().Changed("help") {
 		return rm.ShowHelp()
 	}
 
-	// close the directory
+	// check for commands and execute them accordingly
+
+	// return on no error
 	return nil
+}
+
+// ArgumentValidator - Validates the given arguments
+func ArgumentValidator(rm *RM) func(command *cobra.Command, args []string) error {
+	return func(command *cobra.Command, args []string) error {
+		// check if args are empty
+		if len(args) < 1 {
+			println("rmx: missing arguments or flags for command")
+			println("Try 'rmx --help' for more information.")
+			return nil
+		}
+
+		// return on no error
+		return nil
+	}
 }

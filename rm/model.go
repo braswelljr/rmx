@@ -21,13 +21,13 @@ type Flags struct { // rm -h
 
 // RM is a struct that contains all the information for the rm command
 type RM struct {
-	Flags Flags
+	Flags Flags // Flags for the rm command
 
 	Stdin  io.Reader
 	Stdout io.Writer
 	Color  color.Color
 
-	Directory string
+	Directory string // Working directory
 }
 
 // Directory is a struct that contains all the information for a directory

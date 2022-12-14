@@ -33,5 +33,5 @@ func IsEmpty(path string) bool {
 	}
 
 	// check if the directory is empty
-	return len(dirEntries) == 0
+	return len(dirEntries) < 1
 }
