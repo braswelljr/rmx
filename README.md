@@ -16,18 +16,16 @@ rmx [flags] [path ...]
 
 ### Flags
 
-`-f` - Force removal of files and directories.
+`-f`, `--force` - Force removal of files and directories.
 
 `-i` - Prompt before removal.
 
-`-r` - Recursively remove directories.
+`-I` - Prompt before removal of directories.
+
+`-r`, `-R` - Recursively remove directories.
 
 `-v` - Verbose output.
 
-## License
-  
-MIT
+`-h` - Print help.
 
-## Author
-
-[Braswell Jr](https://github.com/braswelljr)
+`--version` - Print version.

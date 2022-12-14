@@ -42,6 +42,7 @@ func main() {
 	//command.Flags().BoolVarP(&rmr.Flags.RR, "recursive", "R", false, "remove directories and their contents recursively")
 	command.Flags().BoolVarP(&rmr.Flags.D, "dir", "d", false, "remove empty directories")
 	command.Flags().BoolVarP(&rmr.Flags.V, "verbose", "v", false, "explain what is being done")
+	command.Flags().Float32Var(&rmr.Flags.Version, "version", 0.01, "output version information and exit")
 
 	// clean up and exit on error
 	if err := command.Execute(); err != nil {

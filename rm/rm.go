@@ -18,7 +18,6 @@ func (rm *RM) ShowHelp() error {
 	println("  -v                    explain what is being done")
 	println("      --help     display this help and exit")
 	println("      --version  output version information and exit")
-	println("Note:  rm does not remove directories.  Use rmdir to remove directories.")
 
 	return nil
 }
