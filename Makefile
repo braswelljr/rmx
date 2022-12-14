@@ -7,15 +7,19 @@ endif
 
 .PHONY: install
 install:
-	go install -v github.com/braswelljr/rmx
-
-.PHONY: build
-build:
-	go build -o ./bin/ ./.
+	go install -v ./...
 
 .PHONY: run
 run:
 	go run main.go
+
+.PHONY: download
+download:
+	go mod download
+
+.PHONY: build
+build:
+	go build -o ./bin/ ./.
 
 .PHONY: test
 test:

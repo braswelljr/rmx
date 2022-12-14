@@ -10,9 +10,11 @@ func main() {
 	// initialize cobra
 	command := &cobra.Command{
 		Use:   "rmx [OPTION]... [FILE]...",
-		Short: "A cross platform drop-in replacement for UNIX rm command",
+		Short: "A cross-platform replacement for UNIX rm command",
+		Long:  "A cross-platform replacement for UNIX rm command",
 		Run: func(command *cobra.Command, args []string) {
-			// check for help flag
+			// Execute the command
+			command.SetArgs(args)
 		},
 	}
 
