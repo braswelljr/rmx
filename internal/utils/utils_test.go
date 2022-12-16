@@ -127,3 +127,5 @@ func TestGenerateRandomKey(t *testing.T) {
 		}
 	})
 }
+
+// TestIndent - check if an added indent

@@ -3,6 +3,7 @@ package help
 import (
 	"github.com/spf13/cobra"
 
+	"github.com/braswelljr/rmx/internal/utils"
 	"github.com/braswelljr/rmx/rm"
 )
 
@@ -26,5 +27,36 @@ func Help(_ *rm.RM, _ *cobra.Command, _ []string) error {
 	println("      --help     display this help and exit")
 	println("      --version  output version information and exit")
 
+	return nil
+}
+
+// HelpUsage - prints the usage of the command
+//
+//	@param {*cobra.Command} command - command to print the usage of.
+//	@return {string} - usage of the command.
+func HelpUsage(command *cobra.Command) error {
+	subcommands := command.Commands()
+
+	// check for length of subcommands
+	if len(subcommands) > 0 {
+		command.Print("\n\nAvailable commands:\n")
+		// print the subcommands
+		for _, c := range subcommands {
+			// check for hidden commands
+			if c.Hidden {
+				continue
+			}
+			command.Printf("  %s\n", c.Name())
+		}
+		return nil
+	}
+
+	// print the flag usage information
+	flagUsages := command.LocalFlags().FlagUsages()
+	// check if usages are empty
+	if flagUsages != "" {
+		command.Println("\n\nFlags:")
+		command.Print(utils.Indent(utils.Dedent(flagUsages), 2))
+	}
 	return nil
 }
