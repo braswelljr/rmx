@@ -81,3 +81,49 @@ func TestIsEmpty(t *testing.T) {
 		}
 	})
 }
+
+// TestIsDirectory - check if a path is a directory
+func TestIsDirectory(t *testing.T) {
+	// create a temporary directory to test depending on the OS
+	dir := os.TempDir()
+
+	// create a file in the directory
+	if _, err := os.Create(dir + "/test.txt"); err != nil {
+		t.Error("Creating file: ", err)
+	}
+
+	// isDirectory
+	t.Run("IsDirectory", func(t *testing.T) {
+		// check if the path is a directory
+		if IsDirectory(dir) {
+			assert.Equal(t, true, IsDirectory(dir), "Path should be a directory")
+		}
+	})
+
+	// isNotDirectory
+	t.Run("IsNotDirectory", func(t *testing.T) {
+		// check if the path is not a directory
+		if !IsDirectory(dir + "/test.txt") {
+			assert.Equal(t, false, IsDirectory(dir+"/test.txt"), "Path should not be a directory")
+		}
+	})
+}
+
+// TestGenerateRandomKey - check if a random string is generated
+func TestGenerateRandomKey(t *testing.T) {
+	t.Run("GenerateRandomKey", func(t *testing.T) {
+		keyLen := 10
+		// create a random string
+		randomString := GenerateRandomKey(keyLen)
+
+		// check if the random string is empty
+		if randomString != "" {
+			assert.NotEqual(t, "", randomString, "Random string should not be empty")
+		}
+
+		// check if the random string is the correct length
+		if len(randomString) == keyLen {
+			assert.Equal(t, keyLen, len(randomString), "Random string should be 10 characters")
+		}
+	})
+}
