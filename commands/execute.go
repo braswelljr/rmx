@@ -15,7 +15,8 @@ import (
 func Run(r *rm.RM, command *cobra.Command, args []string) error {
 	// check for empty args or help flag
 	if command.Flags().NFlag() < 1 || command.Flags().Changed("help") {
-		return help.Help(r, command, args)
+		help.Help(r, command, args)
+		return nil
 	}
 
 	// check for commands and execute them accordingly

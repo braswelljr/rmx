@@ -3,6 +3,7 @@ package commands
 import (
 	"os"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 
 	"github.com/braswelljr/rmx/rm"
@@ -16,9 +17,9 @@ var Rmc = rm.RM{
 func RootCommand() *cobra.Command {
 	// initialize cobra
 	command := &cobra.Command{
-		Use:   "rmx [OPTION]... [FILE]...",
-		Short: "A cross-platform replacement for UNIX rm command",
-		Long:  "A cross-platform replacement for UNIX rm command",
+		Use:   "rmx [FILE]...",
+		Short: "A cross-platform replacement for UNIX " + color.CyanString("rm") + " command",
+		Long:  "A cross-platform replacement for UNIX " + color.CyanString("rm") + " command",
 		Args:  ArgumentValidator(&Rmc),
 		RunE: func(command *cobra.Command, args []string) error {
 			Rmc.Directory = "."
