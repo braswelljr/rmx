@@ -3,9 +3,12 @@ package constants
 import (
 	"math/rand"
 	"time"
+
+	"github.com/fatih/color"
 )
 
 var (
+	ToolName        = color.CyanString("rmx")                                                             // ToolName - the name of the tool
 	DotChar         = 46                                                                                  // DotChar - the ASCII character for a dot
 	SeedSrc         = rand.NewSource(time.Now().UnixNano())                                               // random seed
 	SourceKey       = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+{}|:<>?" // the key to be used for the generation

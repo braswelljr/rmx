@@ -1,6 +1,9 @@
 package commands
 
 import (
+	"fmt"
+
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 
 	"github.com/braswelljr/rmx/commands/help"
@@ -28,10 +31,11 @@ func Run(r *rm.RM, command *cobra.Command, args []string) error {
 // ArgumentValidator - Validates the given arguments
 func ArgumentValidator(rmc *rm.RM) func(command *cobra.Command, args []string) error {
 	return func(_ *cobra.Command, args []string) error {
+		cmd_name := color.CyanString("rmx")
 		// check if args are empty
 		if len(args) < 1 {
-			println("rmx: missing arguments or flags for command")
-			println("Try 'rmx --help' for more information.")
+			// print prompt
+			fmt.Printf("%s: missing arguments or flags for command\nTry '%s --help' for more information.\n", cmd_name, cmd_name)
 			return nil
 		}
 

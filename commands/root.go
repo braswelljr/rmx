@@ -17,9 +17,9 @@ var Rmc = rm.RM{
 func RootCommand() *cobra.Command {
 	// initialize cobra
 	command := &cobra.Command{
-		Use:   "rmx [FILE]...",
-		Short: "A cross-platform replacement for UNIX " + color.CyanString("rm") + " command",
-		Long:  "A cross-platform replacement for UNIX " + color.CyanString("rm") + " command",
+		Use:   "rmx " + color.MagentaString("[flags]...") + " " + color.YellowString("[directory / file]..."),
+		Short: "A cross-platform replacement for UNIX " + color.YellowString("rm") + " command.",
+		Long:  "A cross-platform replacement for UNIX " + color.YellowString("rm") + " command.",
 		Args:  ArgumentValidator(&Rmc),
 		RunE: func(command *cobra.Command, args []string) error {
 			Rmc.Directory = "."

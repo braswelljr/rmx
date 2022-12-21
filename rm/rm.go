@@ -12,6 +12,7 @@ type Flags struct { // rm -h
 	F       bool    `flag:"force" short:"f" description:"ignore nonexistent files and arguments, never prompt"`                                                                                                               // rm -f
 	Ii      bool    `flag:"interactive" short:"i" description:"prompt before every removal"`                                                                                                                                  // rm -i
 	II      bool    `flag:"interactive" short:"I" description:"prompt once before removing more than three files, or when removing recursively; less intrusive than -i, while still giving protection against most mistakes"` // rm -I
+	Rf      bool    `flag:"recursive" short:"rf" description:"remove directories and fi"`                                                                                                                                     // rm -rf
 	Rr      bool    `flag:"recursive" short:"r" description:"remove directories and their contents recursively"`                                                                                                              // rm -r
 	RR      bool    `flag:"recursive" short:"R" description:"remove directories and their contents recursively"`                                                                                                              // rm -R
 	D       bool    `flag:"dir" short:"d" description:"remove empty directories"`                                                                                                                                             // rm -d
@@ -21,7 +22,7 @@ type Flags struct { // rm -h
 
 // RM is a struct that contains all the information for the rm command
 type RM struct {
-	Flags Flags // Flags for the rm command
+	Flags // Flags for the rm command
 
 	Stdin  io.Reader
 	Stdout io.Writer

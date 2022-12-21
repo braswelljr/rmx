@@ -17,6 +17,6 @@ func CommandFlags(command *cobra.Command, rmc *rm.RM) {
 	command.Flags().BoolVarP(&rmc.Flags.Rr, "recursive", "r", false, "remove directories and their contents recursively")
 	//command.Flags().BoolVarP(&rmc.Flags.RR, "recursive", "R", false, "remove directories and their contents recursively")
 	command.Flags().BoolVarP(&rmc.Flags.D, "dir", "d", false, "remove empty directories")
-	command.Flags().BoolVarP(&rmc.Flags.V, "verbose", "v", false, "explain what is being done")
+	command.PersistentFlags().BoolVarP(&rmc.Flags.V, "verbose", "v", false, "explain what is being done")
 	command.Flags().Float32Var(&rmc.Flags.Version, "version", 0.01, "output version information and exit")
 }
