@@ -28,3 +28,6 @@ pnpmfile.js
 *.njsproj
 *.sln
 *.sw?
+
+# testing files
+bin/test

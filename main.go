@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/braswelljr/rmx/commands"
+	commands "github.com/braswelljr/rmx/cmd"
 )
 
 func main() {

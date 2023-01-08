@@ -6,7 +6,8 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 
-	"github.com/braswelljr/rmx/commands/help"
+	"github.com/braswelljr/rmx/cmd/help"
+	"github.com/braswelljr/rmx/cmd/interactive"
 	"github.com/braswelljr/rmx/rm"
 )
 
@@ -18,11 +19,17 @@ import (
 func Run(r *rm.RM, command *cobra.Command, args []string) error {
 	// check for empty args or help flag
 	if command.Flags().NFlag() < 1 || command.Flags().Changed("help") {
+		// run the help command
 		help.Help(r, command, args)
 		return nil
 	}
 
 	// check for commands and execute them accordingly
+	if r.Ii || command.Flags().Changed("interactive") {
+		// run the interactive command
+		interactive.Interactive(r, command, args)
+		return nil
+	}
 
 	// return on no error
 	return nil
