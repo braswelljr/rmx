@@ -23,7 +23,9 @@ func Help(_ *rm.RM, command *cobra.Command, args []string) {
 		// check if the command is hidden
 		if command.Hidden {
 			// print the usage of the command
-			HelpUsage(command)
+			if err := HelpUsage(command); err != nil {
+				panic(err)
+			}
 			return
 		}
 
@@ -65,16 +67,22 @@ func Help(_ *rm.RM, command *cobra.Command, args []string) {
 			}
 
 			// print the usage of the command
-			HelpUsage(command)
+			if err := HelpUsage(command); err != nil {
+				panic(err)
+			}
 			return
 		}
 	}
 
 	// print the help message
-	command.Help()
+	if err := command.Help(); err != nil {
+		panic(err)
+	}
 
 	// print the usage of the command
-	HelpUsage(command)
+	if err := HelpUsage(command); err != nil {
+		panic(err)
+	}
 }
 
 // HelpUsage - prints the usage of the command
@@ -103,7 +111,7 @@ func HelpUsage(command *cobra.Command) error {
 	// check if usages are empty
 	if flagUsages != "" {
 		// flags header
-		command.Println("\n\n%s:", color.CyanString("Flags"))
+		command.Printf("\n\n%s:", color.CyanString("Flags"))
 		// print the flag usages
 		command.Print(utils.Indent(utils.Dedent(flagUsages), 2))
 	}
