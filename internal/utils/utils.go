@@ -3,9 +3,10 @@ package utils
 import (
 	"bytes"
 	"fmt"
-	"io/fs"
 	"os"
+	"path/filepath"
 	"strings"
+	"sync"
 )
 
 // IsDirectory returns true if the path is a directory.
@@ -28,6 +29,11 @@ func IsDirectory(path string) bool {
 //	@param path - the path to the directory
 //	@return bool - true if the directory is empty
 func IsEmpty(path string) bool {
+	// check if the directory exists
+	if exists, err := Exists(path); err != nil || !exists {
+		return false
+	}
+
 	// get the directory
 	dir, err := os.Open(path)
 	if err != nil {
@@ -91,24 +97,73 @@ func WalkDirectory(root string) (*Directory, error) {
 
 	// create directory structure
 	directory := &Directory{
-		Name:        root,
-		Files:       []fs.DirEntry{},
+		Name:        filepath.Base(root),
+		Path:        root,
+		IsEmpty:     IsEmpty(root),
+		Files:       []*File{},
 		Directories: []*Directory{},
 	}
 
+	// Use a channel to perform the directory traversal concurrently
+	dirChan := make(chan *Directory)
+
+	// Use a wait group to wait for all the directories to be traversed
+	var wg sync.WaitGroup
+
 	// iterate through the list of files and directories
 	for _, fileOrDir := range filesAndDirs {
-		if fileOrDir.IsDir() {
-			// recursively walk directory
-			d, _ := WalkDirectory(fileOrDir.Name())
+		// get the file path
+		fpath := filepath.Join(root, fileOrDir.Name())
 
-			// append directories
-			directory.Directories = append(directory.Directories, d)
+		// check if the file is a directory or a file
+		if fileOrDir.IsDir() {
+			// Add to the wait group
+			wg.Add(1)
+
+			// Start a goroutine to walk the directory
+			go func(path string) {
+				// Defer the wait group done
+				defer wg.Done()
+
+				// recursively walk directory
+				subdir, err := WalkDirectory(path)
+				if err != nil {
+					return
+				}
+
+				// send the directory to the channel
+				dirChan <- subdir
+
+				// pass the directory path to the channel
+			}(fpath)
+
+			// receive the directory from the channel
+			subdir := <-dirChan
+
+			// append the directory to the list of directories
+			directory.Directories = append(directory.Directories, subdir)
+
+			// if the file is not a directory
 		} else {
+			info, _ := fileOrDir.Info()
+			// create a file
+			file := &File{
+				Name: fileOrDir.Name(),
+				Path: fpath,
+				Info: info,
+			}
+
 			// append files
-			directory.Files = append(directory.Files, fileOrDir)
+			directory.Files = append(directory.Files, file)
 		}
 	}
+
+	// Close the channel when all the directories have been traversed
+	go func() {
+		wg.Wait()
+		close(dirChan)
+	}()
+
 	// return the results
 	return directory, nil
 }

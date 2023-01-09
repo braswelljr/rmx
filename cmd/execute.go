@@ -17,18 +17,25 @@ import (
 //	@param args - arguments and flags to run alongside the command.
 //	@return error - error if there is one.
 func Run(r *rm.Rm, command *cobra.Command, args []string) error {
+	// check for arguments with no flags
+	// if len(args) > 0 && command.Flags().NFlag() == 0 {
+	// 	// execute the command
+
+	// }
+
+	// check for commands and execute them accordingly
+	// check for help command
 	// check for empty args or help flag
-	if command.Flags().NFlag() < 1 || command.Flags().Changed("help") {
+	if command.Flags().Changed("help") || len(args) < 1 {
 		// run the help command
 		help.Help(r, command, args)
 		return nil
 	}
 
-	// check for commands and execute them accordingly
+	// check for interactive flag
 	if r.Ii || command.Flags().Changed("interactive") {
 		// run the interactive command
-		interactive.Interactive(r, command, args)
-		return nil
+		interactive.InteractiveIi(args)
 	}
 
 	// return on no error

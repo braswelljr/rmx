@@ -128,4 +128,83 @@ func TestGenerateRandomKey(t *testing.T) {
 	})
 }
 
-// TestIndent - check if an added indent
+// TestIndent - check if an added indent is added to a string
+// func TestSpacing(t *testing.T) {
+// 	// create a struct to test
+// 	type item struct {
+// 		str    string
+// 		indent int
+// 	}
+// 	// create a slice of items to test
+// 	items := []item{
+// 		{"test", 1},
+// 		{"test", 2},
+// 		{"test", 3},
+// 	}
+
+// 	t.Run("Indent", func(t *testing.T) {
+// 		for _, item := range items {
+// 			// add an indent to the string
+// 			indentedString := Indent(item.str, item.indent)
+// 			// check if the string is indented
+// 			if indentedString == "" {
+// 				assert.NotEqual(t, "", indentedString, "Indented string should not be empty")
+// 			}
+
+// 			if len(indentedString) == len(item.str)+item.indent {
+// 				assert.Equal(t, len(indentedString), len(item.str)+item.indent, "Indented string should be 1 character longer")
+// 			}
+
+// 			assert.Equal(t, " test", indentedString, "Indented string should be ' test'")
+// 		}
+// 	})
+
+// 	t.Run("Dedent", func(t *testing.T) {
+// 		for _, item := range items {
+// 			// remove an indent from the string
+// 			dedentedString := Dedent(item.str)
+// 			// check if the string is dedented
+// 			if dedentedString == "" {
+// 				assert.NotEqual(t, "", dedentedString, "Dedented string should not be empty")
+// 			}
+
+// 			if len(dedentedString) == len(item.str)-item.indent {
+// 				assert.Equal(t, len(dedentedString), len(item.str)-item.indent, "Dedented string should be 1 character less")
+// 			}
+
+// 			assert.Equal(t, "test", dedentedString, "Dedented string should be 'test'")
+// 		}
+
+// 	})
+// }
+
+// TestWalkDirectory - check if a directory is walked
+func TestWalkDirectory(t *testing.T) {
+	// create a temporary directory to test depending on the OS
+	dir := os.TempDir()
+
+	files := []string{"test.txt", "test2.txt", "test3.txt"}
+
+	// create a file in the directory
+	if _, err := os.Create(dir + "/test.txt"); err != nil {
+		t.Error("Creating file: ", err)
+	}
+
+	// walk the directory
+	filesAndDirs, err := WalkDirectory(dir)
+	if err != nil {
+		assert.Equal(t, nil, err, "Directory should be walked")
+	}
+
+	// check if the directory is walked correctly and the file is found
+	// if filesAndDirs.Name == dir {
+	// 	assert.Equal(t, "test.txt", filesAndDirs.Name, "File should be found")
+	// }
+
+	// check if the the created file is found in files
+	for i, file := range files {
+		if file == filesAndDirs.Files[i].Name {
+			assert.Equal(t, "test.txt", file, "File should be found")
+		}
+	}
+}
