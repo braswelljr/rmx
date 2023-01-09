@@ -15,7 +15,7 @@ import (
 //	@param {*cobra.Command} commands - commands.
 //	@param {[] string} args - command arguments.
 //	@return void
-func Interactive(_ *rm.RM, _ *cobra.Command, args []string) {
+func Interactive(_ *rm.Rm, _ *cobra.Command, args []string) {
 	// prompt the user for confirmation before removing the files
 	if len(args) == 0 {
 		args = []string{"."}
@@ -34,7 +34,7 @@ func Interactive(_ *rm.RM, _ *cobra.Command, args []string) {
 		for _, file := range directory.Files {
 			// prompt the user for confirmation
 			prompt := &utils.InteractivePrompt{
-				Prompt: fmt.Sprintf("Are you sure you want to remove the following file %s?", file.Name()),
+				Prompt: fmt.Sprintf("\nAre you sure you want to remove the following file %s?", file.Name()),
 				Type:   "danger",
 			}
 

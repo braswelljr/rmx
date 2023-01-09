@@ -1,4 +1,4 @@
-package commands
+package cmd
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ import (
 //	@param command - commands to run.
 //	@param args - arguments and flags to run alongside the command.
 //	@return error - error if there is one.
-func Run(r *rm.RM, command *cobra.Command, args []string) error {
+func Run(r *rm.Rm, command *cobra.Command, args []string) error {
 	// check for empty args or help flag
 	if command.Flags().NFlag() < 1 || command.Flags().Changed("help") {
 		// run the help command
@@ -36,7 +36,7 @@ func Run(r *rm.RM, command *cobra.Command, args []string) error {
 }
 
 // ArgumentValidator - Validates the given arguments
-func ArgumentValidator(rmc *rm.RM) func(command *cobra.Command, args []string) error {
+func ArgumentValidator(rmx *rm.Rm) func(command *cobra.Command, args []string) error {
 	return func(_ *cobra.Command, args []string) error {
 		cmd_name := color.CyanString("rmx")
 		// check if args are empty

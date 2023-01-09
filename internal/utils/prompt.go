@@ -42,7 +42,7 @@ func Prompt(prompt *InteractivePrompt) bool {
 	}
 
 	// create the prompt
-	fmt.Printf("Type %s for confirmation : ", color.MagentaString("[yes / y / Yes]"))
+	fmt.Printf("Type %s for confirmation : ", color.MagentaString("y / n"))
 
 	// get the user confirmation
 	var confirmation string
@@ -51,7 +51,7 @@ func Prompt(prompt *InteractivePrompt) bool {
 	fmt.Scanln(&confirmation)
 
 	// check if the user confirmed the prompt
-	if confirmation == "y" || confirmation == "Y" || confirmation == "yes" || confirmation == "Yes" {
+	if confirmation == "y" || confirmation == "Y" {
 		prompt.Confirmation = true
 	} else {
 		prompt.Confirmation = false

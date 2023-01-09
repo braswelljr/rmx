@@ -8,7 +8,8 @@ import (
 )
 
 // Flags is a struct that contains all the flags for the rm command
-type Flags struct { // rm -h
+type Flags struct {
+	H       bool    `flag:"help" short:"h" description:"display this help and exit"`                                                                                                                                          // rm -h
 	F       bool    `flag:"force" short:"f" description:"ignore nonexistent files and arguments, never prompt"`                                                                                                               // rm -f
 	Ii      bool    `flag:"interactive" short:"i" description:"prompt before every removal"`                                                                                                                                  // rm -i
 	II      bool    `flag:"interactive" short:"I" description:"prompt once before removing more than three files, or when removing recursively; less intrusive than -i, while still giving protection against most mistakes"` // rm -I
@@ -21,7 +22,7 @@ type Flags struct { // rm -h
 }
 
 // RM is a struct that contains all the information for the rm command
-type RM struct {
+type Rm struct {
 	Flags // Flags for the rm command
 
 	Stdin  io.Reader

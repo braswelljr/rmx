@@ -8,7 +8,7 @@ import (
 
 type ForceC struct {
 	Force   bool
-	Process rm.RM
+	Process rm.Rm
 }
 
 // Force - force a command to run.
@@ -17,6 +17,6 @@ type ForceC struct {
 //	@param {*cobra.Command} commands - commands.
 //	@param {[] string} args - command arguments.
 //	@return void
-func Force(r *rm.RM, command *cobra.Command, args []string) {
+func Force(r *rm.Rm, command *cobra.Command, args []string) {
 	// force the command to run
 }

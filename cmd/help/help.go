@@ -17,7 +17,7 @@ import (
 //	@param {*cobra.Command} commands - commands.
 //	@param {[] string} args - command arguments.
 //	@return void
-func Help(_ *rm.RM, command *cobra.Command, args []string) {
+func Help(_ *rm.Rm, command *cobra.Command, args []string) {
 	// check if the command is a root command
 	if execute.IsRootCommand(command.Parent()) && len(args) >= 2 && args[1] != "--help" && args[1] != "-h" {
 		// check if the command is hidden
