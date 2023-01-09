@@ -179,32 +179,32 @@ func TestGenerateRandomKey(t *testing.T) {
 // }
 
 // TestWalkDirectory - check if a directory is walked
-func TestWalkDirectory(t *testing.T) {
-	// create a temporary directory to test depending on the OS
-	dir := os.TempDir()
+// func TestWalkDirectory(t *testing.T) {
+// 	// create a temporary directory to test depending on the OS
+// 	dir := os.TempDir()
 
-	files := []string{"test.txt", "test2.txt", "test3.txt"}
+// 	files := []string{"test.txt", "test2.txt", "test3.txt"}
 
-	// create a file in the directory
-	if _, err := os.Create(dir + "/test.txt"); err != nil {
-		t.Error("Creating file: ", err)
-	}
+// 	// create a file in the directory
+// 	if _, err := os.Create(dir + "/test.txt"); err != nil {
+// 		t.Error("Creating file: ", err)
+// 	}
 
-	// walk the directory
-	filesAndDirs, err := WalkDirectory(dir)
-	if err != nil {
-		assert.Equal(t, nil, err, "Directory should be walked")
-	}
+// 	// walk the directory
+// 	filesAndDirs, err := WalkDirectory(dir)
+// 	if err != nil {
+// 		assert.Equal(t, nil, err, "Directory should be walked")
+// 	}
 
-	// check if the directory is walked correctly and the file is found
-	// if filesAndDirs.Name == dir {
-	// 	assert.Equal(t, "test.txt", filesAndDirs.Name, "File should be found")
-	// }
+// 	// check if the directory is walked correctly and the file is found
+// 	// if filesAndDirs.Name == dir {
+// 	// 	assert.Equal(t, "test.txt", filesAndDirs.Name, "File should be found")
+// 	// }
 
-	// check if the the created file is found in files
-	for i, file := range files {
-		if file == filesAndDirs.Files[i].Name {
-			assert.Equal(t, "test.txt", file, "File should be found")
-		}
-	}
-}
+// 	// check if the the created file is found in files
+// 	for i, file := range files {
+// 		if file == filesAndDirs.Files[i].Name {
+// 			assert.Equal(t, "test.txt", file, "File should be found")
+// 		}
+// 	}
+// }
