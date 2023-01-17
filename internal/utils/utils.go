@@ -13,15 +13,15 @@ import (
 //
 //	@param path - the path to the file/directory.
 //	@return bool - true if the path is a directory.
-func IsDirectory(path string) bool {
+func IsDirectory(path string) (bool, error) {
 	// get the file info
 	fileInfo, err := os.Stat(path)
 	if err != nil {
-		panic(err)
+		return false, fmt.Errorf("unable to get file info for %s: %w", path, err)
 	}
 
 	// check if the path is a directory
-	return fileInfo.IsDir()
+	return fileInfo.IsDir(), nil
 }
 
 // IsEmpty returns true if the directory is empty

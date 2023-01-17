@@ -24,7 +24,13 @@ func InteractiveIi(args []string) {
 	// before removing the files
 	for _, arg := range args {
 		// check if the arg is a directory
-		if utils.IsDirectory(arg) {
+		isDir, err := utils.IsDirectory(arg)
+		if err != nil {
+			fmt.Printf("error checking %s is a directory \n", arg)
+			continue
+		}
+
+		if isDir {
 			directory, err := utils.WalkDirectory(arg)
 			if err != nil {
 				continue

@@ -4,8 +4,14 @@ import (
 	"testing"
 )
 
-// TestInteractive - tests the interactive command.
+// TestInteractiveIi - tests the interactive command.
 //
 //	@param t - testing object.
 //	@return void
-func TestInteractive(t *testing.T) {}
+func TestInteractiveIi(t *testing.T) {}
+
+// TestInteractiveII - tests the interactive command.
+//
+//	@param t - testing object.
+//	@return void
+func TestInteractiveII(t *testing.T) {}

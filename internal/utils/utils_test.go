@@ -95,16 +95,16 @@ func TestIsDirectory(t *testing.T) {
 	// isDirectory
 	t.Run("IsDirectory", func(t *testing.T) {
 		// check if the path is a directory
-		if IsDirectory(dir) {
-			assert.Equal(t, true, IsDirectory(dir), "Path should be a directory")
+		if isDir, _ := IsDirectory(dir + "/test.txt"); isDir {
+			assert.Equal(t, true, isDir, "Path should be a directory")
 		}
 	})
 
 	// isNotDirectory
 	t.Run("IsNotDirectory", func(t *testing.T) {
 		// check if the path is not a directory
-		if !IsDirectory(dir + "/test.txt") {
-			assert.Equal(t, false, IsDirectory(dir+"/test.txt"), "Path should not be a directory")
+		if isDir, _ := IsDirectory(dir + "/test.txt"); !isDir {
+			assert.Equal(t, false, isDir, "Path should not be a directory")
 		}
 	})
 }

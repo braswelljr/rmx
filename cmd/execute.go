@@ -18,10 +18,13 @@ import (
 //	@return error - error if there is one.
 func Run(r *rm.Rm, command *cobra.Command, args []string) error {
 	// check for arguments with no flags
-	// if len(args) > 0 && command.Flags().NFlag() == 0 {
-	// 	// execute the command
-
-	// }
+	if len(args) > 0 && command.Flags().NFlag() == 0 {
+		// execute the command
+		if err := rm.RemoveMultiple(args); err != nil {
+			fmt.Printf("error removing %s \n", args)
+		}
+		return nil
+	}
 
 	// check for commands and execute them accordingly
 	// check for help command
@@ -32,10 +35,16 @@ func Run(r *rm.Rm, command *cobra.Command, args []string) error {
 		return nil
 	}
 
-	// check for interactive flag
+	// check for interactive flag -i
 	if r.Ii || command.Flags().Changed("interactive") {
 		// run the interactive command
 		interactive.InteractiveIi(args)
+	}
+
+	// check for interactive flag -I
+	if r.II || command.Flags().Changed("INTERACTIVE") {
+		// run the interactive command
+		interactive.InteractiveII(args)
 	}
 
 	// return on no error

@@ -2,7 +2,9 @@ package rm
 
 import (
 	"errors"
+	"fmt"
 	"os"
+	"sync"
 
 	"github.com/braswelljr/rmx/internal/utils"
 )
@@ -48,5 +50,50 @@ func RemoveAll(path string) error {
 //	@param {[]string} paths - the paths to the directories.
 //	@return {error} - error.
 func RemoveMultiple(paths []string) error {
-	return nil
+	var err error
+	// create a wait group
+	var wg sync.WaitGroup
+	// make an error channel
+	errChan := make(chan error, len(paths))
+	// loop through the paths concurrently
+	for _, path := range paths {
+		// increment the wait group
+		wg.Add(1)
+
+		// remove the directory concurrently
+		go func(path string) {
+			// decrement the wait group
+			defer wg.Done()
+
+			// check if the directory exists
+			if exists, err := utils.Exists(path); err != nil || !exists {
+				if err != nil {
+					// set the error
+					fmt.Println("directory does not exist: ", path)
+				}
+			}
+
+			// remove the directory
+			if err := RemoveAll(path); err != nil {
+				// set the error
+				errChan <- err
+			}
+		}(path)
+	}
+
+	errChanLen := len(errChan)
+
+	// check if there are any errors
+	if errChanLen > 0 {
+		// loop through the errors
+		for i := 0; i < errChanLen; i++ {
+			// set the error
+			err = <-errChan
+		}
+	}
+
+	// wait for all the directories to be removed
+	wg.Wait()
+
+	return err
 }
