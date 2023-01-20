@@ -97,3 +97,26 @@ func RemoveMultiple(paths []string) error {
 
 	return err
 }
+
+// RemoveDirectory - remove the directory.
+//
+//	@param {string} path - the path to the directory.
+//	@return {error} - error.
+func RemoveDirectory(path string) error {
+	// check if the directory exists
+	if exists, err := utils.Exists(path); err != nil || !exists {
+		return errors.New("Directory does not exist")
+	}
+
+	//check if is a directory
+	if isDir, err := utils.IsDirectory(path); err != nil || !isDir {
+		return errors.New("path is not a directory")
+	}
+
+	// remove the directory
+	if err := os.Remove(path); err != nil {
+		return err
+	}
+
+	return nil
+}

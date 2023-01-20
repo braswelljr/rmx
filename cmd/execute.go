@@ -6,6 +6,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 
+	"github.com/braswelljr/rmx/cmd/directory"
 	"github.com/braswelljr/rmx/cmd/help"
 	"github.com/braswelljr/rmx/cmd/interactive"
 	"github.com/braswelljr/rmx/rm"
@@ -45,6 +46,12 @@ func Run(r *rm.Rm, command *cobra.Command, args []string) error {
 	if r.II || command.Flags().Changed("INTERACTIVE") {
 		// run the interactive command
 		interactive.InteractiveII(args)
+	}
+
+	// remove empty directories
+	if r.D || command.Flags().Changed("dir") {
+		// remove empty directories
+		directory.Directory(args)
 	}
 
 	// return on no error

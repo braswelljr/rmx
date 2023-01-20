@@ -15,4 +15,8 @@ var (
 	ErrInvalidDirectory = errors.New("invalid directory")
 	// ErrInvalidFileOrDirectory - error for invalid file or directory
 	ErrInvalidFileOrDirectory = errors.New("invalid file or directory")
+	// ErrEmptyDirectory - error for empty directory
+	ErrEmptyDirectory = errors.New("empty directory")
+	// ErrDirectoryDoesNotExist - error for directory does not exist
+	ErrDirectoryDoesNotExist = errors.New("directory does not exist")
 )
