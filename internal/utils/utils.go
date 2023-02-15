@@ -242,3 +242,115 @@ func Dedent(s string) string {
 	}
 	return strings.TrimSuffix(buf.String(), "\n")
 }
+
+// GetFileExtension - gets the file extension
+//
+//	@param {string} filename - the filename
+//	@return {string} - the file extension
+func GetFileExtension(filename string) string {
+	// get the file extension
+	ext := filepath.Ext(filename)
+
+	// remove the dot
+	return strings.TrimPrefix(ext, ".")
+}
+
+// FileSize - gets the file size
+//
+//	@param {string} filename - the filename
+//	@return {int64} - the file size
+func FileSize(filename string) int64 {
+	// get the file info
+	info, _ := os.Stat(filename)
+
+	// return the file size
+	return info.Size()
+}
+
+// FileSizeToString - gets the file size and converts it to {bytes, KB, MB, GB}
+//
+//	@param {string} filename - the filename
+//	@return {string} - the file size
+func FileSizeToString(filename string) string {
+	// get the file size
+	size := FileSize(filename)
+
+	// convert the file size to string
+	return ByteCountSI(size)
+}
+
+// ByteCountSI - converts bytes to {bytes, KB, MB, GB}
+//
+//	@param {int64} b - the number of bytes
+//	@return {string} - the converted bytes
+func ByteCountSI(b int64) string {
+	const unit = 1000
+	if b < unit {
+		return fmt.Sprintf("%d B", b)
+	}
+	div, exp := int64(unit), 0
+	for n := b / unit; n >= unit; n /= unit {
+		div *= unit
+		exp++
+	}
+	return fmt.Sprintf("%.1f %cB", float64(b)/float64(div), "kMGTPE"[exp])
+}
+
+// GetFile - gets the file
+//
+//	@param {string} path - the path to the file
+//	@return {File} - the file
+func GetFile(path string) *File {
+	// if the path is empty or the path is a directory
+	if len(strings.TrimSpace(path)) == 0 {
+		// return nil
+		return nil
+	}
+
+	// check if the path is a directory and return nil if it is
+	if isDir, err := IsDirectory(path); err != nil || isDir {
+		// return nil
+		return nil
+	}
+
+	// get the file info
+	info, _ := os.Stat(path)
+
+	// return the file
+	return &File{
+		Name: info.Name(),
+		Path: path,
+		Info: info,
+	}
+}
+
+// GetFiles - gets the files in a directory
+//
+//	@param {string} path - the path to the directory
+//	@return {[]File} - the files
+func GetFiles(path string) []*File {
+	// create a slice of files
+	var files []*File
+
+	// get the directory
+	dir, _ := os.Open(path)
+
+	// get the files
+	fileInfos, _ := dir.Readdir(-1)
+
+	// loop through the files
+	for _, fileInfo := range fileInfos {
+		// create a file
+		file := &File{
+			Name: fileInfo.Name(),
+			Path: path + "/" + fileInfo.Name(),
+			Info: fileInfo,
+		}
+
+		// append the file
+		files = append(files, file)
+	}
+
+	// return the files
+	return files
+}

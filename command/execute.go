@@ -1,4 +1,4 @@
-package cmd
+package command
 
 import (
 	"fmt"
@@ -6,9 +6,10 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 
-	"github.com/braswelljr/rmx/cmd/directory"
-	"github.com/braswelljr/rmx/cmd/help"
-	"github.com/braswelljr/rmx/cmd/interactive"
+	"github.com/braswelljr/rmx/command/directory"
+	"github.com/braswelljr/rmx/command/help"
+	"github.com/braswelljr/rmx/command/interactive"
+	"github.com/braswelljr/rmx/command/verbose"
 	"github.com/braswelljr/rmx/rm"
 )
 
@@ -48,6 +49,12 @@ func Run(r *rm.Rm, command *cobra.Command, args []string) error {
 		interactive.InteractiveII(args)
 	}
 
+	// check for the verbose flag
+	if r.V || command.Flags().Changed("verbose") {
+		// run the verbose command
+		verbose.Verbose(args)
+	}
+
 	// remove empty directories
 	if r.D || command.Flags().Changed("dir") {
 		// remove empty directories
@@ -61,11 +68,11 @@ func Run(r *rm.Rm, command *cobra.Command, args []string) error {
 // ArgumentValidator - Validates the given arguments
 func ArgumentValidator(rmx *rm.Rm) func(command *cobra.Command, args []string) error {
 	return func(_ *cobra.Command, args []string) error {
-		cmd_name := color.CyanString("rmx")
+		command_name := color.CyanString("rmx")
 		// check if args are empty
 		if len(args) < 1 {
 			// print prompt
-			fmt.Printf("%s: missing arguments or flags for command\nTry '%s --help' for more information.\n", cmd_name, cmd_name)
+			fmt.Printf("%s: missing arguments or flags for command\nTry '%s --help' for more information.\n", command_name, command_name)
 			return nil
 		}
 

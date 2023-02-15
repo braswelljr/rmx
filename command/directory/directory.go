@@ -21,16 +21,16 @@ func Directory(args []string) {
 		return
 	}
 
-	cmd_name := color.CyanString("rmx")
+	command_name := color.CyanString("rmx")
 
 	// loop through the directories
 	for i, arg := range args {
 		// check if the directory exists
 		if exists, err := utils.Exists(arg); err != nil || !exists {
 			if i == 0 {
-				fmt.Printf("%s: cannot remove '%s': directory does not exist", cmd_name, arg)
+				fmt.Printf("%s: cannot remove '%s': directory does not exist", command_name, arg)
 			} else {
-				fmt.Printf("\n%s: cannot remove '%s': directory does not exist", cmd_name, arg)
+				fmt.Printf("\n%s: cannot remove '%s': directory does not exist", command_name, arg)
 			}
 			continue
 		}
@@ -38,9 +38,9 @@ func Directory(args []string) {
 		// check if the directory is a directory
 		if isDir, err := utils.IsDirectory(arg); err != nil || !isDir {
 			if i == 0 {
-				fmt.Printf("%s: '%s' is not a directory", cmd_name, arg)
+				fmt.Printf("%s: '%s' is not a directory", command_name, arg)
 			} else {
-				fmt.Printf("\n%s: '%s' is not a directory", cmd_name, arg)
+				fmt.Printf("\n%s: '%s' is not a directory", command_name, arg)
 			}
 			continue
 		}
@@ -48,9 +48,9 @@ func Directory(args []string) {
 		// check if the directory is empty
 		if isEmpty := utils.IsEmpty(arg); !isEmpty {
 			if i == 0 {
-				fmt.Printf("%s: cannot remove '%s': Directory not empty", cmd_name, arg)
+				fmt.Printf("%s: cannot remove '%s': Directory not empty", command_name, arg)
 			} else {
-				fmt.Printf("\n%s: cannot remove '%s': Directory not empty", cmd_name, arg)
+				fmt.Printf("\n%s: cannot remove '%s': Directory not empty", command_name, arg)
 			}
 			continue
 		}
@@ -58,9 +58,9 @@ func Directory(args []string) {
 		// remove the directory
 		if err := rm.RemoveDirectory(arg); err != nil {
 			if i == 0 {
-				fmt.Printf("%s: unable to remove directory '%s'", cmd_name, arg)
+				fmt.Printf("%s: unable to remove directory '%s'", command_name, arg)
 			} else {
-				fmt.Printf("\n%s: unable to remove directory '%s'", cmd_name, arg)
+				fmt.Printf("\n%s: unable to remove directory '%s'", command_name, arg)
 			}
 		}
 	}

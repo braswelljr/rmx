@@ -1,6 +1,6 @@
 module github.com/braswelljr/rmx
 
-go 1.19
+go 1.20
 
 require (
 	github.com/alecthomas/assert v1.0.0

@@ -7,7 +7,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 
-	"github.com/braswelljr/rmx/cmd"
+	kommand "github.com/braswelljr/rmx/command"
 	"github.com/braswelljr/rmx/rm"
 )
 
@@ -25,14 +25,14 @@ func main() {
 		Use:   "rmx " + color.MagentaString("[flags]...") + " " + color.YellowString("[directory / file]..."),
 		Short: "A cross-platform replacement for UNIX " + color.YellowString("rm") + " command.",
 		Long:  "A cross-platform replacement for UNIX " + color.YellowString("rm") + " command.",
-		Args:  cmd.ArgumentValidator(&Rmx),
+		Args:  kommand.ArgumentValidator(&Rmx),
 		RunE: func(command *cobra.Command, args []string) error {
 			Rmx.Directory = "."
 			if len(args) > 0 {
 				Rmx.Directory = args[0]
 
 				// run command and return any error
-				return cmd.Run(&Rmx, command, args)
+				return kommand.Run(&Rmx, command, args)
 			}
 
 			return nil
