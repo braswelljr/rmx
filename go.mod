@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/alecthomas/assert v1.0.0
 	github.com/fatih/color v1.15.0
-	github.com/spf13/cobra v1.6.1
+	github.com/spf13/cobra v1.7.0
 )
 
 require (
