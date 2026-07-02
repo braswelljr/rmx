@@ -17,6 +17,12 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
+    # Use bash on every OS (git-bash on Windows) so the go commands parse
+    # identically and coverage arguments aren't reinterpreted by PowerShell.
+    defaults:
+      run:
+        shell: bash
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4

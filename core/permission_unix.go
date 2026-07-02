@@ -22,5 +22,7 @@ func deviceID(info os.FileInfo) (uint64, bool) {
 	if !ok {
 		return 0, false
 	}
-	return uint64(st.Dev), true
+	// Stat_t.Dev is uint64 on Linux but int32 on darwin/BSD, so this conversion
+	// is required off-Linux even though unconvert (run on Linux CI) flags it.
+	return uint64(st.Dev), true //nolint:unconvert
 }

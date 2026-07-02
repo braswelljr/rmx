@@ -160,6 +160,17 @@ func (r *Rm) removeDirArg(path string, info os.FileInfo) {
 		r.removeTree(path, dev, haveDev)
 
 	case r.Dir:
+		// Report a non-empty directory with rm's canonical message rather than
+		// the OS-native errno text (which differs across platforms).
+		entries, err := os.ReadDir(path)
+		if err != nil {
+			r.errf("cannot remove '%s': %s", path, errText(err))
+			return
+		}
+		if len(entries) > 0 {
+			r.errf("cannot remove '%s': Directory not empty", path)
+			return
+		}
 		if !r.confirmDir(path) {
 			return
 		}

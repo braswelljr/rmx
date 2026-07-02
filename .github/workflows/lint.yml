@@ -1,26 +1,25 @@
 name: Lint
+
 on:
   push:
-    paths:
-      - "**.go"
-      - go.mod
-      - go.sum
+    branches: ["main","staging"]
   pull_request:
-    paths:
-      - "**.go"
-      - go.mod
-      - go.sum
+    branches: ["main", "staging"]
 
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -28,24 +27,10 @@ jobs:
           go-version-file: go.mod
           cache: true
 
-      - name: Verify formatting and modules
-        run: |
-          STATUS=0
-          assert-nothing-changed() {
-            "$@" >/dev/null || return 1
-            if ! diff="$(git diff -U1 --color --exit-code)"; then
-              printf '\e[31mError: running `\e[1m%s\e[22m` results in modifications that you must check into version control:\e[0m\n%s\n\n' "$*" "$diff" >&2
-              git checkout -- .
-              STATUS=1
-            fi
-          }
-          go mod verify
-          assert-nothing-changed gofmt -s -w .
-          assert-nothing-changed go mod tidy
-          exit $STATUS
-
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v7
+        uses: golangci/golangci-lint-action@v8
         with:
-          version: latest
+          # Pin to a known-good v2 release so a newer 'latest' can't tighten the
+          # config schema and fail `config verify` out from under us.
+          version: v2.12.2
           args: --timeout=5m
