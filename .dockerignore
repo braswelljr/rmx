@@ -1,0 +1,20 @@
+# Build artifacts and local output
+bin/
+dist/
+coverage.out
+
+# Generated docs are not needed to build the binary
+docs/
+
+# VCS and CI metadata
+.git/
+.github/
+.idea/
+.vscode/
+
+# Docker and project meta
+Dockerfile
+docker-compose.yml
+.dockerignore
+*.md
+LICENSE

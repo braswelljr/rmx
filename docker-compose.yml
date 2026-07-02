@@ -1,0 +1,20 @@
+# Convenience wrapper for running rmx in a container.
+#
+# The current directory is mounted read-write at /work, so rmx operates on your
+# files. Pass flags/paths after the service name:
+#
+#   docker compose run --rm rmx --version
+#   docker compose run --rm rmx -rv build/
+#
+# Caution: this is a real delete tool operating on the mounted volume.
+
+services:
+  rmx:
+    build:
+      context: .
+      args:
+        VERSION: dev
+    image: braswelljr/rmx:dev
+    volumes:
+      - ./:/work
+    # ENTRYPOINT is `rmx` (from the image); arguments come from the CLI.

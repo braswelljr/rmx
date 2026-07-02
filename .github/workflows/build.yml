@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { goos: linux, goarch: amd64 }
+          - { goos: linux, goarch: arm64 }
+          - { goos: darwin, goarch: amd64 }
+          - { goos: darwin, goarch: arm64 }
+          - { goos: windows, goarch: amd64 }
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Build ${{ matrix.goos }}/${{ matrix.goarch }}
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+        run: |
+          version="$(git describe --tags --always --dirty 2>/dev/null || echo dev)"
+          bin="rmx"
+          [ "${{ matrix.goos }}" = "windows" ] && bin="rmx.exe"
+          out="dist/rmx-${{ matrix.goos }}-${{ matrix.goarch }}"
+          go build -trimpath \
+            -ldflags "-s -w -X github.com/braswelljr/rmx/internal/common.Version=${version}" \
+            -o "${out}/${bin}" .
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: rmx-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: dist/rmx-${{ matrix.goos }}-${{ matrix.goarch }}/*
+          if-no-files-found: error

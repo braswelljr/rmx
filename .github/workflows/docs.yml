@@ -1,0 +1,46 @@
+name: Docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**.go"
+      - "docs/**"
+      - "tools/**"
+      - go.mod
+  pull_request:
+    branches: [main]
+    paths:
+      - "**.go"
+      - "docs/**"
+      - "tools/**"
+      - go.mod
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Regenerate documentation
+        run: go generate ./...
+
+      - name: Verify docs are up to date
+        run: |
+          if [ -n "$(git status --porcelain docs)" ]; then
+            echo "::error::docs/ is out of date. Run 'make docs' and commit the result." >&2
+            git status --porcelain docs
+            git --no-pager diff -- docs
+            exit 1
+          fi

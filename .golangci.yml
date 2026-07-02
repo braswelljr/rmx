@@ -1,0 +1,77 @@
+version: "2"
+
+linters:
+  # Start from the default set and add extras.
+  # golangci-lint enables errcheck, govet, ineffassign, staticcheck, unused by default.
+  enable:
+    - misspell       # catch typos in strings and comments
+    - unconvert      # remove unnecessary type conversions
+    - revive         # idiomatic Go style (golint successor)
+    - gocritic       # opinionated but catches real issues
+
+  disable:
+    # funlen / cyclop / maintidx measure complexity but routinely flag
+    # legitimate switch statements in this codebase (parser, organiseFile).
+    - funlen
+    - cyclop
+    - maintidx
+    - gocognit
+
+  settings:
+    revive:
+      rules:
+        # exported rule omitted — JSDoc block comments document all exported
+        # symbols; Go's "must start with symbol name" godoc format is not enforced.
+        - name: error-return
+        - name: error-naming
+        - name: error-strings
+        - name: var-naming
+        - name: blank-imports
+
+    gocritic:
+      # Only checks that are NOT already on by default — listing default checks
+      # here makes golangci-lint emit "no need to enable" warnings.
+      enabled-checks:
+        - commentedOutCode
+        - emptyFallthrough
+        - nilValReturn
+        - stringXbytes
+        - unlabelStmt
+        - unnecessaryBlock
+
+    misspell:
+      locale: US
+
+  # v2 schema: file/rule exclusions live under linters.exclusions
+  # (the old top-level `issues.exclude-dirs` / `issues.exclude-rules` keys were
+  # removed in golangci-lint v2 and fail `golangci-lint config verify` in CI).
+  exclusions:
+    paths:
+      - vendor
+      - bin
+
+    rules:
+      # Test files: allow gocritic/revive latitude (helpers, longer funcs).
+      - path: "_test\\.go"
+        linters:
+          - gocritic
+          - revive
+
+      # Intentional best-effort closes (defer _ = f.Close()) are fine.
+      - linters:
+          - errcheck
+        text: "Error return value of `.*\\.Close`"
+
+      # os.Remove in cleanup paths is intentionally ignored via _ = os.Remove(...).
+      - linters:
+          - errcheck
+        text: "Error return value of `os\\.Remove`"
+
+      # Diagnostics and prompts are best-effort writes to the user's terminal;
+      # a failed write to stderr/stdout is not actionable.
+      - linters:
+          - errcheck
+        text: "Error return value of `fmt\\.Fprint(f|ln)?`"
+
+run:
+  timeout: 5m
